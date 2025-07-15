@@ -13,7 +13,17 @@ object DatabaseFactory {
 
         transaction {
             println("Creando tablas...")
-            SchemaUtils.createMissingTablesAndColumns(Usuarios, Locales, Promociones, Reservas, Favoritos, Historial)
+            SchemaUtils.createMissingTablesAndColumns(
+                Usuarios,
+                Locales,
+                Promociones,
+                Menus,
+                TiposLocales,
+                Local_Tipo,
+                Reservas,
+                Favoritos,
+                Historial
+            )
             println("Tablas creadas exitosamente.")
         }
     }
