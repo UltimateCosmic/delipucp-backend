@@ -17,9 +17,6 @@ object DatabaseFactory {
                 Usuarios,
                 Locales,
                 Promociones,
-                Menus,
-                TiposLocales,
-                Local_Tipo,
                 Reservas,
                 Favoritos,
                 Historial

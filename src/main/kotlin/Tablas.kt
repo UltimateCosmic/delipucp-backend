@@ -1,6 +1,7 @@
 package com.example
 
 import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.sql.Table
 
 object Usuarios : IntIdTable() {
     val nombre = varchar("nombre", 50)
@@ -15,7 +16,6 @@ object Locales : IntIdTable() {
     val nombre = varchar("nombre", 50)
     val ubicacion = varchar("ubicacion", 100)
     val horario = varchar("horario", 50)
-    val horarioDespacho = varchar("horarioDespacho", 50).nullable() // Agregado
     val imagenUrl = varchar("imagenUrl", 100)
     val abierto = bool("abierto")
     val telefono = varchar("telefono", 15).nullable()
@@ -31,15 +31,14 @@ object Promociones : IntIdTable() {
 }
 
 object Reservas : IntIdTable() {
-    val codigoReserva = varchar("codigoReserva", 20).uniqueIndex() // Nuevo
     val local = reference("localId", Locales)
     val usuario = reference("usuarioId", Usuarios)
-    val menu = reference("menuId", Menus).nullable() // Nuevo
     val fecha = varchar("fecha", 20)
     val hora = varchar("hora", 20)
+    val platillo=reference("platilloId",Platillos)
+    val cantidad=integer("cantidad")
     val estado = varchar("estado", 20)
-    val mesa = varchar("mesa", 20)
-    val metodoPago = varchar("metodoPago", 30).nullable() // Nuevo
+
 }
 
 object Favoritos : IntIdTable() {
@@ -54,27 +53,9 @@ object Historial : IntIdTable() {
     val detalle = varchar("detalle", 200)
 }
 
-object Menus : IntIdTable() {
-    val nombre = varchar("nombre", 50)
-    val tipo = varchar("tipo", 20)
-    val entrada = varchar("entrada", 100).nullable()
-    val principal = varchar("principal", 100).nullable()
-    val postre = varchar("postre", 100).nullable()
-    val bebida = varchar("bebida", 100).nullable()
+object Platillos : IntIdTable() {
+    val nombre = varchar("nombre", 255)
+    val descripcion = varchar("descripcion", 500)
     val precio = decimal("precio", 10, 2)
-    val imagenUrl = varchar("imagenUrl", 100).nullable()
-    val fecha = varchar("fecha", 20) // Cambiado de date("fecha") a varchar
-    val local = reference("localId", Locales)
-}
-
-object TiposLocales : IntIdTable() {
-    val nombre = varchar("nombre", 30)
-}
-
-object Local_Tipo : IntIdTable() {
-    val local = reference("localId", Locales)
-    val tipo = reference("tipoId", TiposLocales)
-    init {
-        uniqueIndex(local, tipo)
-    }
+    val localId = reference("local_id", Locales)
 }
