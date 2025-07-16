@@ -305,11 +305,13 @@ fun Application.apiModule() {
                 val platillos = transaction {
                     Platillos.selectAll().map {
                         mapOf(
-                            "id" to it[Platillos.id].toString(),
+                            "id" to it[Platillos.id].value,
                             "nombre" to it[Platillos.nombre],
                             "descripcion" to it[Platillos.descripcion],
-                            "precio" to it[Platillos.precio].toString(),
-                            "localId" to it[Platillos.localId].toString()
+                            "imagenUrl" to it[Platillos.imagenUrl],
+                            "precio" to it[Platillos.precio].toDouble(),
+                            "stock" to it[Platillos.stock],
+                            "localId" to it[Platillos.local].value
                         )
                     }
                 }
@@ -344,7 +346,7 @@ fun Application.apiModule() {
                         it[nombre] = params["nombre"] ?: ""
                         it[descripcion] = params["descripcion"] ?: ""
                         it[precio] = params["precio"]?.toBigDecimalOrNull() ?: 0.toBigDecimal()
-                        it[localId] = params["localId"]?.toIntOrNull() ?: 0
+                        it[local] = params["local"]?.toIntOrNull() ?: 0
                     }
                 }
                 call.respond(mapOf("status" to "Platillo actualizado"))

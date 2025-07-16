@@ -37,7 +37,7 @@ object Reservas : IntIdTable() {
     val hora = varchar("hora", 20)
     val platillo=reference("platilloId",Platillos)
     val cantidad=integer("cantidad")
-    val estado = varchar("estado", 20)
+    val estado = varchar("estado",20)
 
 }
 
@@ -53,9 +53,12 @@ object Historial : IntIdTable() {
     val detalle = varchar("detalle", 200)
 }
 
+// Tabla Platillos con relación 1:N a Locales
 object Platillos : IntIdTable() {
     val nombre = varchar("nombre", 255)
     val descripcion = varchar("descripcion", 500)
+    val imagenUrl = varchar("imagenUrl",255)
     val precio = decimal("precio", 10, 2)
-    val localId = reference("local_id", Locales)
+    val stock = integer("stock")
+    val local = reference("localId", Locales)
 }
