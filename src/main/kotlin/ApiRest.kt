@@ -147,6 +147,33 @@ fun Application.apiModule() {
                 call.respond(locales)
             }
 
+            get("/{id}"){
+                val id = call.parameters["id"]?.toIntOrNull()
+                if (id == null) {
+                    call.respond(mapOf("status" to "ID inválido"))
+                    return@get
+                }
+                val local = transaction {
+                    Locales.select { Locales.id eq id }.singleOrNull()
+                }
+                if (local != null) {
+                    val localResponse = mapOf(
+                        "id" to local[Locales.id].value.toString(),
+                        "nombre" to local[Locales.nombre],
+                        "ubicacion" to local[Locales.ubicacion],
+                        "horario" to local[Locales.horario],
+                        "horarioDespacho" to local[Locales.horarioDespacho],
+                        "imagenUrl" to local[Locales.imagenUrl],
+                        "abierto" to local[Locales.abierto].toString(),
+                        "telefono" to local[Locales.telefono],
+                        "metodosPago" to local[Locales.metodosPago]
+                    )
+                    call.respond(localResponse)
+                } else {
+                    call.respond(mapOf("status" to "Local no encontrado"))
+                }
+            }
+
             post {
                 val params = call.receive<Map<String, String>>()
                 transaction {
